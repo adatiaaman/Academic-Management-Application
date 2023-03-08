@@ -1,0 +1,169 @@
+
+INSERT INTO department VALUES('CSE');
+INSERT INTO department VALUES('EE');
+INSERT INTO department VALUES('MA');
+INSERT INTO department VALUES('HS');
+
+INSERT INTO credit_limit VALUES(9, 9, 11, 13, 15, 17, 20, 23);
+
+INSERT INTO time_frame VALUES(2, 2022, 1);
+INSERT INTO deadlines VALUES(1, 1, 1, 2, 2022);
+
+INSERT INTO auth VALUES('student1@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO student VALUES ('2022csb1111', 'Student1', 'student1@iitrpr.ac.in', 2022, 'CSE');
+INSERT INTO auth VALUES('student2@iitrpr.ac.in', 'password2', '1234567890');
+INSERT INTO student VALUES ('2022csb1112', 'Student2', 'student2@iitrpr.ac.in', 2022, 'CSE');
+INSERT INTO auth VALUES('student3@iitrpr.ac.in', 'password3', '1234567890');
+INSERT INTO student VALUES ('2022csb1113', 'Student3', 'student3@iitrpr.ac.in', 2022, 'CSE');
+INSERT INTO auth VALUES('student4@iitrpr.ac.in', 'password4', '1234567890');
+INSERT INTO student VALUES ('2022csb1114', 'Student4', 'student4@iitrpr.ac.in', 2022, 'EE');
+INSERT INTO auth VALUES('student5@iitrpr.ac.in', 'password5', '1234567890');
+INSERT INTO student VALUES ('2022csb1115', 'Student5', 'student5@iitrpr.ac.in', 2022, 'EE');
+INSERT INTO auth VALUES('student6@iitrpr.ac.in', 'password6', '1234567890');
+INSERT INTO student VALUES ('2022csb1116', 'Student6', 'student6@iitrpr.ac.in', 2022, 'EE');
+
+INSERT INTO auth VALUES('student7@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO student VALUES ('2022csb1117', 'Student7', 'student7@iitrpr.ac.in', 2022, 'CSE');
+INSERT INTO auth VALUES('student8@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO student VALUES ('2022csb1118', 'Student8', 'student8@iitrpr.ac.in', 2022, 'CSE');
+INSERT INTO auth VALUES('student9@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO student VALUES ('2022csb1119', 'Student9', 'student9@iitrpr.ac.in', 2022, 'CSE');
+INSERT INTO auth VALUES('student10@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO student VALUES ('2022csb1121', 'Student10', 'student10@iitrpr.ac.in', 2022, 'CSE');
+INSERT INTO auth VALUES('student11@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO student VALUES ('2022csb1122', 'Student11', 'student11@iitrpr.ac.in', 2022, 'CSE');
+INSERT INTO auth VALUES('student12@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO student VALUES ('2022csb1123', 'Student12', 'student12@iitrpr.ac.in', 2022, 'CSE');
+
+INSERT INTO auth VALUES('acadoffice@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO acad_office VALUES ('acadoffice@iitrpr.ac.in', 'Staff Deans Office');
+
+INSERT INTO auth VALUES('superuser', 'superuser', '0000000000');
+
+INSERT INTO auth VALUES('inst1@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst1', 'inst1@iitrpr.ac.in', 2020, 'CSE');
+INSERT INTO auth VALUES('inst2@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst2', 'inst2@iitrpr.ac.in', 2020, 'CSE');
+INSERT INTO auth VALUES('inst3@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst3', 'inst3@iitrpr.ac.in', 2020, 'CSE');
+INSERT INTO auth VALUES('inst4@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst4', 'inst4@iitrpr.ac.in', 2020, 'CSE');
+INSERT INTO auth VALUES('inst5@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst5', 'inst5@iitrpr.ac.in', 2020, 'CSE');
+INSERT INTO auth VALUES('inst6@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst6', 'inst6@iitrpr.ac.in', 2020, 'CSE');
+INSERT INTO auth VALUES('inst7@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst7', 'inst7@iitrpr.ac.in', 2020, 'EE');
+INSERT INTO auth VALUES('inst8@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst8', 'inst8@iitrpr.ac.in', 2020, 'EE');
+INSERT INTO auth VALUES('inst9@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst9', 'inst9@iitrpr.ac.in', 2020, 'EE');
+INSERT INTO auth VALUES('inst10@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst10', 'inst10@iitrpr.ac.in', 2020, 'EE');
+INSERT INTO auth VALUES('inst11@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst11', 'inst11@iitrpr.ac.in', 2020, 'EE');
+INSERT INTO auth VALUES('inst12@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst12', 'inst12@iitrpr.ac.in', 2020, 'EE');
+INSERT INTO auth VALUES('inst13@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst13', 'inst13@iitrpr.ac.in', 2020, 'HS');
+INSERT INTO auth VALUES('inst14@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst14', 'inst14@iitrpr.ac.in', 2020, 'HS');
+INSERT INTO auth VALUES('inst15@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst15', 'inst15@iitrpr.ac.in', 2020, 'HS');
+INSERT INTO auth VALUES('inst16@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst16', 'inst16@iitrpr.ac.in', 2020, 'HS');
+INSERT INTO auth VALUES('inst17@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst17', 'inst17@iitrpr.ac.in', 2020, 'MA');
+INSERT INTO auth VALUES('inst18@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst18', 'inst18@iitrpr.ac.in', 2020, 'MA');
+INSERT INTO auth VALUES('inst19@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst19', 'inst19@iitrpr.ac.in', 2020, 'MA');
+INSERT INTO auth VALUES('inst20@iitrpr.ac.in', 'password1', '1234567890');
+INSERT INTO instructor VALUES ('Dr. inst20', 'inst20@iitrpr.ac.in', 2020, 'MA');
+
+
+INSERT INTO course VALUES('CS101', 'cs course1', 3, 1, 1, 4, 3, 'CSE', 1);
+INSERT INTO course VALUES('CS102', 'cs course2', 3, 1, 1, 4, 3, 'CSE', 1);
+INSERT INTO course VALUES('CS201', 'cs course3', 3, 1, 1, 4, 3, 'CSE', 1);
+INSERT INTO course VALUES('CS202', 'cs course4', 3, 1, 1, 4, 3, 'CSE', 1);
+INSERT INTO course VALUES('CS203', 'cs course5', 3, 1, 1, 4, 3, 'CSE', 1);
+INSERT INTO course VALUES('CS204', 'cs course6', 3, 1, 1, 4, 3, 'CSE', 1);
+INSERT INTO course VALUES('CS301', 'cs course7', 3, 1, 1, 4, 3, 'CSE', 1);
+INSERT INTO course VALUES('CS302', 'cs course8', 3, 1, 1, 4, 3, 'CSE', 1);
+INSERT INTO course VALUES('CS303', 'cs course9', 3, 1, 1, 4, 3, 'CSE', 1);
+INSERT INTO course VALUES('CS304', 'cs course10', 3, 1, 1, 4, 3, 'CSE', 1);
+INSERT INTO course VALUES('CS305', 'cs course11', 3, 1, 1, 4, 3, 'CSE', 1);
+INSERT INTO course VALUES('CS306', 'cs course12', 3, 1, 1, 4, 3, 'CSE', 1);
+
+INSERT INTO course VALUES('EE101', 'ee course1', 3, 1, 1, 4, 3, 'EE', 1);
+INSERT INTO course VALUES('EE102', 'ee course2', 3, 1, 1, 4, 3, 'EE', 1);
+INSERT INTO course VALUES('EE201', 'ee course3', 3, 1, 1, 4, 3, 'EE', 1);
+INSERT INTO course VALUES('EE202', 'ee course4', 3, 1, 1, 4, 3, 'EE', 1);
+INSERT INTO course VALUES('EE203', 'ee course5', 3, 1, 1, 4, 3, 'EE', 1);
+INSERT INTO course VALUES('EE204', 'ee course6', 3, 1, 1, 4, 3, 'EE', 1);
+INSERT INTO course VALUES('EE301', 'ee course7', 3, 1, 1, 4, 3, 'EE', 1);
+INSERT INTO course VALUES('EE302', 'ee course8', 3, 1, 1, 4, 3, 'EE', 1);
+INSERT INTO course VALUES('EE303', 'ee course9', 3, 1, 1, 4, 3, 'EE', 1);
+INSERT INTO course VALUES('EE304', 'ee course10', 3, 1, 1, 4, 3, 'EE', 1);
+INSERT INTO course VALUES('EE305', 'ee course11', 3, 1, 1, 4, 3, 'EE', 1);
+INSERT INTO course VALUES('EE306', 'ee course12', 3, 1, 1, 4, 3, 'EE', 1);
+
+INSERT INTO course VALUES('MA101', 'ma course1', 3, 1, 0, 5, 3, 'MA', 1);
+INSERT INTO course VALUES('MA102', 'ma course2', 3, 1, 0, 5, 3, 'MA', 1);
+INSERT INTO course VALUES('MA202', 'ma course3', 3, 1, 0, 5, 3, 'MA', 1);
+INSERT INTO course VALUES('MA302', 'ma course4', 3, 1, 0, 5, 3, 'MA', 1);
+
+INSERT INTO course VALUES('HS101', 'hs course1', 3, 0, 0, 3, 3, 'HS', 1);
+INSERT INTO course VALUES('HS102', 'hs course2', 3, 0, 0, 3, 3, 'HS', 1);
+INSERT INTO course VALUES('HS201', 'hs course3', 3, 0, 0, 3, 3, 'HS', 1);
+INSERT INTO course VALUES('HS301', 'hs course4', 3, 0, 0, 3, 3, 'HS', 1);
+INSERT INTO course VALUES('HS401', 'hs course5', 3, 0, 0, 3, 3, 'HS', 1);
+
+INSERT INTO prereq VALUES('CS201', 'CS101', 6);
+INSERT INTO prereq VALUES('CS301', 'CS101', 6);
+INSERT INTO prereq VALUES('CS301', 'CS201', 6);
+INSERT INTO prereq VALUES('EE201', 'EE101', 6);
+INSERT INTO prereq VALUES('EE301', 'EE101', 6);
+INSERT INTO prereq VALUES('EE301', 'EE201', 6);
+INSERT INTO prereq VALUES('MA302', 'MA101', 7);
+
+INSERT INTO ug_curriculum VALUES(2022, 'CSE', 'CS101, MA101, HS101, CS102, MA102, HS102, CS201, CS202, EE101, CS203, CS204, MA202, HS201, CS301, CS302, CS303, EE201 , CS304, CS305, CS306, MA302, HS301, CP301, CP302', 100);
+INSERT INTO ug_curriculum VALUES(2022, 'EE', 'EE101, MA101, HS101, EE102, MA102, HS102, EE201, EE202, CS101, EE203, EE204, MA202, HS201, EE301, EE302, EE303, CS201, EE304, EE305, EE306, MA302, HS301, CP301, CP302', 100);
+
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('CS101', 'inst1@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('CS102', 'inst2@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('CS201', 'inst3@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('CS202', 'inst4@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('CS203', 'inst5@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('CS204', 'inst6@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('CS301', 'inst1@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('CS302', 'inst2@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('CS303', 'inst3@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('CS304', 'inst4@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('CS305', 'inst5@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('CS306', 'inst6@iitrpr.ac.in', 0, 2, 2022, 0);
+
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('EE101', 'inst7@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('EE102', 'inst8@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('EE202', 'inst9@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('EE201', 'inst10@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('EE203', 'inst11@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('EE204', 'inst12@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('EE301', 'inst7@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('EE302', 'inst8@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('EE303', 'inst9@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('EE304', 'inst10@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('EE305', 'inst11@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('EE306', 'inst12@iitrpr.ac.in', 0, 2, 2022, 0);
+
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('MA101', 'inst17@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('MA102', 'inst18@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('MA202', 'inst19@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('MA302', 'inst20@iitrpr.ac.in', 0, 2, 2022, 0);
+
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('HS101', 'inst13@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('HS102', 'inst14@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('HS201', 'inst15@iitrpr.ac.in', 0, 2, 2022, 0);
+INSERT INTO offered(course_code, inst_email, cgpa_cutoff, sem, year, status) VALUES ('HS301', 'inst16@iitrpr.ac.in', 0, 2, 2022, 0);
+
+

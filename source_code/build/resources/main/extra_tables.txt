@@ -1,0 +1,44 @@
+-- CREATE TABLE advisor(
+-- email VARCHAR(30) NOT NULL,
+
+-- PRIMARY KEY(email),
+-- FOREIGN KEY(email) REFERENCES instructor(email)
+-- );
+
+
+-- CREATE TABLE slot(
+-- slot_id INT NOT NULL,
+-- PRIMARY KEY(slot_id)
+-- );
+
+CREATE TABLE program_core(
+offer_id INT,
+core text, -- "dept year sem"
+elective text
+-- dept VARCHAR(20),
+-- year_of_study INT,
+-- sem INT,
+
+-- FOREIGN KEY(dept) REFERENCES department(name),
+FOREIGN KEY(offer_id) REFERENCES offered(offer_id)
+);
+
+
+
+-- CREATE TABLE ticket(
+-- ticket_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+-- email VARCHAR(30) NOT NULL,
+-- inst_email VARCHAR(30) NOT NULL,
+-- course_code VARCHAR(6) NOT NULL,
+-- sem INT NOT NULL,
+-- year INT NOT NULL,
+-- section INT NOT NULL,
+-- enroll VARCHAR(20),
+-- -- credit, audit
+--status VARCHAR(30),
+-- -- pending inst, pending adv, enrolled, drop, withdraw, inst rejeted, adv rejected
+
+-- FOREIGN KEY(email) REFERENCES student(email),
+-- FOREIGN KEY(inst_email) REFERENCES instructor(email),
+-- FOREIGN KEY(course_code) REFERENCES course(code)
+-- );

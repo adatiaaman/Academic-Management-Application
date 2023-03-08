@@ -1,0 +1,4 @@
+2022csb1119 - Student9
+CGPA: 6.5
+ID: 1, Course code: CS101, Grade: C
+ID: 93, Course code: CS102, Grade: B-

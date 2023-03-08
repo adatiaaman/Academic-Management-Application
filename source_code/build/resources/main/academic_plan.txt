@@ -1,0 +1,34 @@
+
+{
+9, 9, 11, 13, 15, 17, 20, 23 - done
+total 100
+core - 72 (22+2 offered)
+electives - 28 (atleast 10 offered)
+
+CSE:
+1 - CS101, MA101, HS101 (9)
+2 - CS102, MA102, HS102 (9)
+3 - CS201, CS202, EE101 (9)
+4 - CS203, CS204, MA202, HS201 (12)
+5 - CS301, CS302, CS303, EE201 (12)
+6 - CS304, CS305, CS306, MA302, HS301 (15)
+7 - CP301, electives
+8 - CP302, electives
+
+EE:
+1 - EE101, MA101, HS101 (9)
+2 - EE102, MA102, HS102 (9)
+3 - EE201, EE202, CS101 (9)
+4 - EE203, EE204, MA202, HS201 (12)
+5 - EE301, EE302, EE303, CS201 (12)
+6 - EE304, EE305, EE306, MA302, HS301 (15)
+7 - CP301, electives
+8 - CP302, electives
+
+
+professors - done
+cse - 6
+ma - 4
+hs - 4
+ee - 6
+}

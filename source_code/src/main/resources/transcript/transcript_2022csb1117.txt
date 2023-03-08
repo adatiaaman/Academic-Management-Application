@@ -1,0 +1,3 @@
+2022csb1117 - Student7
+CGPA: 8.0
+ID: 1, Course code: CS101, Grade: B

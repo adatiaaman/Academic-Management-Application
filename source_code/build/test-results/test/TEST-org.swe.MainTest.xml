@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.swe.MainTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-03-07T16:55:49" hostname="DESKTOP-6LO900O" time="0.644">
+  <properties/>
+  <testcase name="simulateLogIn()" classname="org.swe.MainTest" time="0.631"/>
+  <testcase name="changeContact()" classname="org.swe.MainTest" time="0.006"/>
+  <testcase name="changePassword()" classname="org.swe.MainTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

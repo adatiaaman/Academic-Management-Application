@@ -1,0 +1,3 @@
+2022csb1111 - Student1
+CGPA: 10.0
+ID: 1, Course code: CS101, Grade: A

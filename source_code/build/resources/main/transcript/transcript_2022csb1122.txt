@@ -1,0 +1,3 @@
+2022csb1122 - Student11
+CGPA: 4.0
+ID: 1, Course code: CS101, Grade: D

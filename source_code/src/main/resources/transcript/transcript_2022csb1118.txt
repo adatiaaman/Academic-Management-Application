@@ -1,0 +1,3 @@
+2022csb1118 - Student8
+CGPA: 5.0
+ID: 1, Course code: CS101, Grade: C-

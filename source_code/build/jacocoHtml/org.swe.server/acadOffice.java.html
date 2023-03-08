@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>acadOffice.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mini_project</a> &gt; <a href="index.source.html" class="el_package">org.swe.server</a> &gt; <span class="el_source">acadOffice.java</span></div><h1>acadOffice.java</h1><pre class="source lang-java linenums">package org.swe.server;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class acadOffice {
+    public String email;
+    Connection con;
+
+<span class="fc" id="L18">    public acadOffice(String email, Connection con) {</span>
+<span class="fc" id="L19">        this.email = email;</span>
+<span class="fc" id="L20">        this.con = con;</span>
+<span class="fc" id="L21">    }</span>
+
+    public int viewGrades() throws SQLException {
+<span class="fc" id="L24">        String getId = &quot;SELECT offer_id FROM offered;&quot;;</span>
+<span class="fc" id="L25">        Statement stgi = con.createStatement();</span>
+<span class="fc" id="L26">        ResultSet rsgi = stgi.executeQuery(getId);</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        while (rsgi.next()) {</span>
+<span class="fc" id="L28">            int id = rsgi.getInt(&quot;offer_id&quot;);</span>
+<span class="fc" id="L29">            System.out.println(&quot;Offer ID: &quot; + id);</span>
+<span class="fc" id="L30">            String getGrade = &quot;SELECT * FROM grades WHERE offer_id=&quot; + Integer.toString(id) + &quot;;&quot;;</span>
+<span class="fc" id="L31">            Statement stgg = con.createStatement();</span>
+<span class="fc" id="L32">            ResultSet rsgg = stgg.executeQuery(getGrade);</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">            while (rsgg.next()) {</span>
+<span class="fc" id="L34">                String studentEmail = rsgg.getString(&quot;email&quot;);</span>
+<span class="fc" id="L35">                String course_code = rsgg.getString(&quot;course_code&quot;);</span>
+<span class="fc" id="L36">                String grade = rsgg.getString(&quot;grade&quot;);</span>
+<span class="fc" id="L37">                String query2 = &quot;SELECT entry_num, name FROM student WHERE email='&quot; + studentEmail + &quot;';&quot;;</span>
+<span class="fc" id="L38">                Statement st2 = con.createStatement();</span>
+<span class="fc" id="L39">                ResultSet rs2 = st2.executeQuery(query2);</span>
+<span class="fc" id="L40">                rs2.next();</span>
+<span class="fc" id="L41">                String studentName = rs2.getString(&quot;name&quot;);</span>
+<span class="fc" id="L42">                String entryNum = rs2.getString(&quot;entry_num&quot;);</span>
+<span class="fc" id="L43">                System.out.println(studentName + &quot; (&quot; + entryNum + &quot;) - &quot; + course_code + &quot;: &quot; + grade);</span>
+<span class="fc" id="L44">            }</span>
+<span class="fc" id="L45">            stgg.close();</span>
+<span class="fc" id="L46">            System.out.println(&quot;\n&quot;);</span>
+<span class="fc" id="L47">        }</span>
+<span class="fc" id="L48">        stgi.close();</span>
+<span class="fc" id="L49">        System.out.println(&quot;\n&quot;);</span>
+<span class="fc" id="L50">        return 1;</span>
+    }
+
+    public int addCourseCatalog(String code, String name, int l, int t, int p, int s, double c, String dept, String[] preCode, int[] preGrade, int numPrereq) throws SQLException {
+<span class="fc" id="L54">        String check = &quot;SELECT * FROM course WHERE code='&quot; + code + &quot;';&quot;;</span>
+<span class="fc" id="L55">        Statement stch = con.createStatement();</span>
+<span class="fc" id="L56">        ResultSet rsch = stch.executeQuery(check);</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (rsch.next()) {</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">            if (rsch.getInt(&quot;status&quot;) == 1) {</span>
+<span class="fc" id="L59">                System.out.println(&quot;Catalog already has a course with same code! Try updating instead.&quot;);</span>
+<span class="fc" id="L60">                return 0;</span>
+            } else {
+<span class="fc" id="L62">                String query = &quot; UPDATE course SET status=1 WHERE code='&quot; + code + &quot;';&quot;;</span>
+<span class="fc" id="L63">                Statement st = con.createStatement();</span>
+<span class="fc" id="L64">                st.executeUpdate(query);</span>
+<span class="fc" id="L65">                System.out.println(&quot;Course was previously deleted. Hence, it is again uploaded with previous l-t-p-s-c and pre-requisite structure.&quot;);</span>
+<span class="fc" id="L66">                return 1;</span>
+            }
+        }
+<span class="fc" id="L69">        Statement st = con.createStatement();</span>
+<span class="fc" id="L70">        String query = &quot;INSERT INTO course VALUES('&quot;</span>
+                + code + &quot;', '&quot; +
+                name + &quot;', &quot; +
+<span class="fc" id="L73">                Integer.toString(l) + &quot;, &quot; +</span>
+<span class="fc" id="L74">                Integer.toString(t) + &quot;, &quot; +</span>
+<span class="fc" id="L75">                Integer.toString(p) + &quot;, &quot; +</span>
+<span class="fc" id="L76">                Integer.toString(s) + &quot;, &quot; +</span>
+<span class="fc" id="L77">                Double.toString(c) + &quot;, '&quot; +</span>
+                dept + &quot;', 1);&quot;;
+<span class="fc" id="L79">        System.out.println(query);</span>
+<span class="fc" id="L80">        st.executeUpdate(query);</span>
+
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        for (int i = 0; i &lt; numPrereq; i++) {</span>
+<span class="fc" id="L83">            String prereqCode = preCode[i];</span>
+<span class="fc" id="L84">            int prereqGrade = preGrade[i];</span>
+<span class="fc" id="L85">            String prereqQuery = &quot;INSERT INTO prereq VALUES('&quot; + code + &quot;', '&quot; + prereqCode + &quot;', '&quot; + Integer.toString(prereqGrade) + &quot;');&quot;;</span>
+<span class="fc" id="L86">            Statement st1 = con.createStatement();</span>
+<span class="fc" id="L87">            st1.executeUpdate(prereqQuery);</span>
+<span class="fc" id="L88">            st1.close();</span>
+        }
+<span class="fc" id="L90">        stch.close();</span>
+<span class="fc" id="L91">        st.close();</span>
+<span class="fc" id="L92">        System.out.println(&quot;Course added to the course catalog.\n&quot;);</span>
+<span class="fc" id="L93">        return 1;</span>
+
+    }
+
+    //    public int updateCourseCatalog() throws SQLException {}
+    public int deleteCourseCatalog(String code) throws SQLException {
+//        System.out.println(&quot;Enter course code: &quot;);
+//        String code = sc.nextLine();
+<span class="fc" id="L101">        String checkCatalogQuery = &quot;SELECT * FROM course WHERE code='&quot; + code + &quot;' AND status=1;&quot;;</span>
+<span class="fc" id="L102">        Statement stcc = con.createStatement();</span>
+<span class="fc" id="L103">        ResultSet rscc = stcc.executeQuery(checkCatalogQuery);</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (!rscc.next()) {</span>
+<span class="fc" id="L105">            System.out.println(&quot;Course already deleted from catalot or not found in catalog! Try again.&quot;);</span>
+<span class="fc" id="L106">            return 0;</span>
+        }
+<span class="fc" id="L108">        stcc.close();</span>
+
+<span class="fc" id="L110">        String delCourse = &quot;UPDATE course SET status=0 WHERE code='&quot; + code + &quot;';&quot;;</span>
+<span class="fc" id="L111">        Statement stdc = con.createStatement();</span>
+<span class="fc" id="L112">        stdc.executeUpdate(delCourse);</span>
+<span class="fc" id="L113">        System.out.println(&quot;Course removed from catalog (It can be added again with same l-t-p-s-c and prerequisite structure).&quot;);</span>
+<span class="fc" id="L114">        System.out.println(&quot;Instructors can't offer course with this course code.\n&quot;);</span>
+<span class="fc" id="L115">        stdc.close();</span>
+
+<span class="fc" id="L117">        return 1;</span>
+    }
+
+    public int readCourseCatalog() throws SQLException {
+<span class="fc" id="L121">        String readCatalog = &quot;SELECT * FROM course;&quot;;</span>
+<span class="fc" id="L122">        Statement strc = con.createStatement();</span>
+<span class="fc" id="L123">        ResultSet rsrc = strc.executeQuery(readCatalog);</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        while (rsrc.next()) {</span>
+<span class="fc" id="L125">            System.out.println(&quot;Course: &quot; + rsrc.getString(&quot;code&quot;) + &quot; (&quot; + rsrc.getString(&quot;name&quot;) + &quot;): &quot;</span>
+<span class="fc" id="L126">                    + rsrc.getInt(&quot;l&quot;) + &quot;-&quot; + rsrc.getInt(&quot;t&quot;) + &quot;-&quot; + rsrc.getInt(&quot;p&quot;) + &quot;-&quot; + rsrc.getInt(&quot;s&quot;) + &quot;-&quot; + rsrc.getInt(&quot;c&quot;)</span>
+<span class="fc" id="L127">                    + &quot; - &quot; + rsrc.getString(&quot;dept&quot;));</span>
+        }
+<span class="fc" id="L129">        strc.close();</span>
+<span class="fc" id="L130">        return 1;</span>
+    }
+
+//    public int editCourseCatalog() throws SQLException {
+//        Scanner sc = new Scanner(System.in);
+//        System.out.println(&quot;Press 0 to add course\nPress 1 to update course\nPress 2 to view course catalog\nPress 3 to delete a course from catalog&quot;);
+//        int ch = sc.nextInt();
+//        sc.nextLine();
+//        if(ch == 0) { // add
+    // code, name, ltpsc, dept
+//            sc.nextLine();
+//            System.out.println(&quot;Enter course code: &quot;);
+//            String code = sc.nextLine();
+//            String check = &quot;SELECT * FROM course WHERE code='&quot; + code +&quot;';&quot;;
+//            Statement stch = con.createStatement();
+//            ResultSet rsch = stch.executeQuery(check);
+//            if(rsch.next()) {
+//                if(rsch.getInt(&quot;status&quot;) == 1) {
+//                    System.out.println(&quot;Catalog already has a course with same code! Try updating instead.&quot;);
+//                    return 0;
+//                }
+//                else {
+//                    System.out.println(&quot;Course was previously deleted. Hence, it is again uploaded with previous l-t-p-s-c and pre-requisite structure&quot;);
+//                    String query = &quot; UPDATE course SET status=1 WHERE code='&quot; + code +&quot;';&quot;;
+//                    Statement st = con.createStatement();
+//                    st.executeUpdate(query);
+//                    return 1;
+//                }
+//            }
+
+//            System.out.println(code + &quot;\n&quot; + &quot;Enter course name: &quot;);
+//            String name = sc.nextLine();
+//            System.out.println(name + &quot;\n&quot; +&quot;Enter lecture: &quot;);
+//            int l = sc.nextInt();
+//            System.out.println(&quot;Enter tutorial: &quot;);
+//            int t = sc.nextInt();
+//            System.out.println(&quot;Enter practical: &quot;);
+//            int p = sc.nextInt();
+//            System.out.println(&quot;Enter study hours: &quot;);
+//            int s = sc.nextInt();
+//            System.out.println(&quot;Enter credits: &quot;);
+//            float c = sc.nextFloat();
+//            sc.nextLine();
+//            System.out.println(&quot;Enter course department: &quot;);
+//            String dept = sc.nextLine();
+
+//            Statement st = con.createStatement();
+//            String query = &quot;INSERT INTO course VALUES('&quot;
+//                    + code + &quot;', '&quot; +
+//                    name + &quot;', &quot; +
+//                    Integer.toString(l) + &quot;, &quot; +
+//                    Integer.toString(t) + &quot;, &quot; +
+//                    Integer.toString(p) + &quot;, &quot; +
+//                    Integer.toString(s) + &quot;, &quot; +
+//                    Float.toString(c) + &quot;, '&quot; +
+//                    dept + &quot;');&quot;;
+//            System.out.println(query);
+//            st.executeUpdate(query);
+
+//            System.out.println(&quot;How many pre-requisites does this course have?&quot;);
+//            int numPrereq = sc.nextInt();
+//            sc.nextLine();
+//            for(int i=0; i&lt;numPrereq; i++) {
+//                System.out.println(&quot;Please enter course code (&quot; + (i+1) + &quot;): &quot;);
+//                String prereqCode = sc.nextLine();
+//                System.out.println(&quot;Please enter pre-requisite grade requirement [10/9/8/7/6/5] (enter 0 if no grade criteria): &quot;);
+//                int prereqGrade = sc.nextInt();
+//                sc.nextLine();
+//                String prereqQuery = &quot;INSERT INTO prereq VALUES('&quot;;
+//                prereqQuery += code + &quot;', '&quot; + prereqCode + &quot;', '&quot; + Integer.toString(prereqGrade) + &quot;');&quot;;
+//                Statement st1 = con.createStatement();
+//                st1.executeUpdate(prereqQuery);
+//            }
+//            System.out.println(&quot;Course added to the course catalog.\n&quot;);
+//            return 1;
+//        }
+//        else if (ch == 1) { // update - think about previously offered course and their enrollments
+//            sc.nextLine();
+//            System.out.println(&quot;Please enter course code for the course to be updated: &quot;);
+//            String code = sc.nextLine();
+//            String findQuery = &quot;SELECT * FROM course WHERE code='&quot; + code +&quot;' AND status=1;&quot;;
+//            Statement st = con.createStatement();
+//            ResultSet rs = st.executeQuery(findQuery);
+//            if(!rs.next()){
+//                System.out.println(&quot;Course does not exist in catalog (or deleted before)! Try again.&quot;);
+//                return 0;
+//            }
+//            System.out.println(name + &quot;\n&quot; +&quot;Enter lecture: &quot;);
+//            int l = sc.nextInt();
+//            System.out.println(&quot;Enter tutorial: &quot;);
+//            int t = sc.nextInt();
+//            System.out.println(&quot;Enter practical: &quot;);
+//            int p = sc.nextInt();
+//            System.out.println(&quot;Enter study hours: &quot;);
+//            int s = sc.nextInt();
+//            System.out.println(&quot;Enter credits: &quot;);
+//            float c = sc.nextFloat();
+//            sc.nextLine();
+//            String updateCourse = &quot;UPDATE course SET l=&quot;
+
+//            String change = &quot;l&quot;;
+//            while(!change.equals(&quot;x&quot;)) {
+//                System.out.println(&quot;Please enter (l/t/p/s) to be changed (Enter x to finish/quit): &quot;);
+//
+//                change = sc.nextLine();
+//                Statement stc = con.createStatement();
+//                if(change.equals(&quot;l&quot;)) {
+//                    System.out.println(&quot;Enter new (lectures) l: &quot;);
+//                    int newVal = sc.nextInt();
+//                    sc.nextLine();
+//                    String changeQuery = &quot;UPDATE course SET l=&quot; + Integer.toString(newVal) + &quot; WHERE code='&quot; + code + &quot;';&quot;;
+//
+//                    stc.executeUpdate(changeQuery);
+//                }
+//                else if (change.equals(&quot;t&quot;)) {
+//                    System.out.println(&quot;Enter new (tutorials) t: &quot;);
+//                    int newVal = sc.nextInt();
+//                    sc.nextLine();
+//                    String changeQuery = &quot;UPDATE course SET t=&quot; + Integer.toString(newVal) + &quot; WHERE code='&quot; + code + &quot;';&quot;;
+//
+//                    stc.executeUpdate(changeQuery);
+//                }
+//                else if (change.equals(&quot;p&quot;)) {
+//                    System.out.println(&quot;Enter new (practicals) p: &quot;);
+//                    int newVal = sc.nextInt();
+//                    sc.nextLine();
+//                    String changeQuery = &quot;UPDATE course SET p=&quot; + Integer.toString(newVal) + &quot; WHERE code='&quot; + code + &quot;';&quot;;
+//
+//                    stc.executeUpdate(changeQuery);
+//                }
+//                else if (change.equals(&quot;s&quot;)) {
+//                    System.out.println(&quot;Enter new (study hours) s: &quot;);
+//                    int newVal = sc.nextInt();
+//                    sc.nextLine();
+//                    String changeQuery = &quot;UPDATE course SET s=&quot; + Integer.toString(newVal) + &quot; WHERE code='&quot; + code + &quot;';&quot;;
+//
+//                    stc.executeUpdate(changeQuery);
+//                }
+////                else if (change.equals(&quot;c&quot;)) {
+////                    System.out.println(&quot;Enter new (credits) c=: &quot;);
+////                    float newVal = sc.nextFloat();
+////                    String changeQuery = &quot;UPDATE course SET c=&quot; + Float.toString(newVal) + &quot; WHERE code='&quot; + code + &quot;';&quot;;
+////
+////                    stc.executeUpdate(changeQuery);
+////                }
+//                else if (change.equals(&quot;x&quot;)) {
+//                    System.out.println(&quot;Course details updated&quot;);
+//                }
+//                else {
+//                    System.out.println(&quot;Invalid! Try again&quot;);
+//                }
+//                stc.close();
+//            }
+
+//            return 1;
+//        }
+//        else if (ch == 2) {
+//            String readCatalog = &quot;SELECT * FROM course;&quot;;
+//            Statement strc = con.createStatement();
+//            ResultSet rsrc = strc.executeQuery(readCatalog);
+//            while (rsrc.next()) {
+//                System.out.println(&quot;Course: &quot; + rsrc.getString(&quot;code&quot;) + &quot; (&quot; + rsrc.getString(&quot;name&quot;) + &quot;): &quot;
+//                        + rsrc.getInt(&quot;l&quot;) + &quot;-&quot; + rsrc.getInt(&quot;t&quot;) + &quot;-&quot; + rsrc.getInt(&quot;p&quot;) + &quot;-&quot; + rsrc.getInt(&quot;s&quot;) + &quot;-&quot; + rsrc.getInt(&quot;c&quot;)
+//                        + &quot; - &quot; + rsrc.getString(&quot;dept&quot;));
+//            }
+//            return 1;
+//        }
+//        else if (ch == 3) {
+//            sc.nextLine();
+//            System.out.println(&quot;Enter course code: &quot;);
+//            String code = sc.nextLine();
+//            String checkCatalogQuery = &quot;SELECT * FROM course WHERE code='&quot; + code +&quot;' AND status=1;&quot;;
+//            Statement stcc = con.createStatement();
+//            ResultSet rscc = stcc.executeQuery(checkCatalogQuery);
+//            if(!rscc.next()) {
+//                System.out.println(&quot;Course already deleted from catalot or not found in catalog! Try again.&quot;);
+//                return 0;
+//            }
+//            String delCourse = &quot;UPDATE course SET status=0 WHERE code='&quot; + code +&quot;';&quot;;
+//            Statement stdc = con.createStatement();
+//            stdc.executeUpdate(delCourse);
+//            return 1;
+//        }
+//        else {
+//            System.out.println(&quot;Invalid input! Please try again.&quot;);
+//            return 0;
+//        }
+//    }
+
+    public double calculateCGPA(String stuEmail) throws SQLException {
+<span class="fc" id="L320">        double totalCredits = 0;</span>
+<span class="fc" id="L321">        double totalWeightage = 0;</span>
+<span class="fc" id="L322">        String query = &quot;SELECT * FROM grades WHERE email='&quot; + stuEmail + &quot;';&quot;;</span>
+<span class="fc" id="L323">        Statement st = con.createStatement();</span>
+<span class="fc" id="L324">        ResultSet rs = st.executeQuery(query);</span>
+<span class="fc bfc" id="L325" title="All 2 branches covered.">        while (rs.next()) {</span>
+<span class="fc" id="L326">            int offer_id = rs.getInt(&quot;offer_id&quot;);</span>
+<span class="fc" id="L327">            String query1 = &quot;SELECT * FROM offered WHERE offer_id=&quot;;</span>
+<span class="fc" id="L328">            query1 += Integer.toString(offer_id);</span>
+<span class="fc" id="L329">            query1 += &quot;;&quot;;</span>
+<span class="fc" id="L330">            Statement st1 = con.createStatement();</span>
+<span class="fc" id="L331">            ResultSet rs1 = st1.executeQuery(query1);</span>
+<span class="fc" id="L332">            rs1.next();</span>
+<span class="fc" id="L333">            String course_code = rs1.getString(&quot;course_code&quot;);</span>
+<span class="fc" id="L334">            String query2 = &quot;SELECT * FROM course WHERE code='&quot; + course_code + &quot;';&quot;;</span>
+<span class="fc" id="L335">            Statement st2 = con.createStatement();</span>
+<span class="fc" id="L336">            ResultSet rs2 = st2.executeQuery(query2);</span>
+<span class="fc" id="L337">            rs2.next();</span>
+<span class="fc" id="L338">            double cred = rs2.getInt(&quot;c&quot;);</span>
+<span class="fc" id="L339">            totalCredits += cred;</span>
+<span class="fc" id="L340">            String grade = rs.getString(&quot;grade&quot;);</span>
+<span class="pc bpc" id="L341" title="1 of 9 branches missed.">            switch (grade) {</span>
+<span class="fc" id="L342">                case &quot;A&quot; -&gt; totalWeightage += cred * 10;</span>
+<span class="fc" id="L343">                case &quot;A-&quot; -&gt; totalWeightage += cred * 9;</span>
+<span class="fc" id="L344">                case &quot;B&quot; -&gt; totalWeightage += cred * 8;</span>
+<span class="fc" id="L345">                case &quot;B-&quot; -&gt; totalWeightage += cred * 7;</span>
+<span class="fc" id="L346">                case &quot;C&quot; -&gt; totalWeightage += cred * 6;</span>
+<span class="fc" id="L347">                case &quot;C-&quot; -&gt; totalWeightage += cred * 5;</span>
+<span class="fc" id="L348">                case &quot;D&quot; -&gt; totalWeightage += cred * 4;</span>
+//                case &quot;E&quot; -&gt; totalWeightage += cred * 2;
+<span class="fc" id="L350">                case &quot;F&quot; -&gt; totalWeightage += cred * 0;</span>
+            }
+<span class="fc" id="L352">        }</span>
+<span class="fc" id="L353">        st.close();</span>
+<span class="fc bfc" id="L354" title="All 2 branches covered.">        if (totalCredits == 0) {</span>
+<span class="fc" id="L355">            return 0;</span>
+        }
+<span class="fc" id="L357">        return (totalWeightage / totalCredits);</span>
+    }
+
+    public int generateTranscript() throws SQLException, IOException {
+        // seperate file for each student
+<span class="fc" id="L362">        String students = &quot;SELECT * FROM student;&quot;;</span>
+<span class="fc" id="L363">        Statement st = con.createStatement();</span>
+<span class="fc" id="L364">        ResultSet rs = st.executeQuery(students);</span>
+<span class="fc bfc" id="L365" title="All 2 branches covered.">        while (rs.next()) {</span>
+<span class="fc" id="L366">            String stuEmail = rs.getString(&quot;email&quot;);</span>
+<span class="fc" id="L367">            String entryNum = rs.getString(&quot;entry_num&quot;);</span>
+<span class="fc" id="L368">            String studentName = rs.getString(&quot;name&quot;);</span>
+<span class="fc" id="L369">            String file = &quot;C:\\Users\\DELL\\IdeaProjects\\mini_project\\src\\main\\resources\\transcript\\transcript_&quot;;</span>
+<span class="fc" id="L370">            file += entryNum;</span>
+<span class="fc" id="L371">            file += &quot;.txt&quot;;</span>
+<span class="fc" id="L372">            FileWriter fw = new FileWriter(file);</span>
+<span class="fc" id="L373">            BufferedWriter bw = new BufferedWriter(fw);</span>
+<span class="fc" id="L374">            String grades = &quot;SELECT * FROM grades WHERE email='&quot; +</span>
+                    stuEmail + &quot;';&quot;;
+<span class="fc" id="L376">            bw.write(entryNum + &quot; - &quot; + studentName);</span>
+<span class="fc" id="L377">            bw.newLine();</span>
+<span class="fc" id="L378">            double cgpa = calculateCGPA(stuEmail);</span>
+<span class="fc" id="L379">            bw.write(&quot;CGPA: &quot; + cgpa);</span>
+<span class="fc" id="L380">            bw.newLine();</span>
+<span class="fc" id="L381">            Statement stg = con.createStatement();</span>
+<span class="fc" id="L382">            ResultSet rsg = stg.executeQuery(grades);</span>
+<span class="fc bfc" id="L383" title="All 2 branches covered.">            while (rsg.next()) {</span>
+<span class="fc" id="L384">                int offerId = rsg.getInt(&quot;offer_id&quot;);</span>
+<span class="fc" id="L385">                String code = rsg.getString(&quot;course_code&quot;);</span>
+<span class="fc" id="L386">                String grade = rsg.getString(&quot;grade&quot;);</span>
+<span class="fc" id="L387">                bw.write(&quot;ID: &quot; + offerId + &quot;, Course code: &quot; + code + &quot;, Grade: &quot; + grade);</span>
+<span class="fc" id="L388">                bw.newLine();</span>
+<span class="fc" id="L389">            }</span>
+<span class="fc" id="L390">            stg.close();</span>
+<span class="fc" id="L391">            bw.close();</span>
+<span class="fc" id="L392">        }</span>
+<span class="fc" id="L393">        st.close();</span>
+<span class="fc" id="L394">        System.out.println(&quot;Transcripts generated\n&quot;);</span>
+<span class="fc" id="L395">        return 1;</span>
+    }
+
+    public int endSemester() throws SQLException {
+<span class="fc" id="L399">        String timeFetch = &quot;SELECT * FROM time_frame WHERE status=1;&quot;;</span>
+<span class="fc" id="L400">        Statement tss = con.createStatement();</span>
+<span class="fc" id="L401">        ResultSet trs = tss.executeQuery(timeFetch);</span>
+<span class="fc" id="L402">        trs.next();</span>
+<span class="fc" id="L403">        int curSem = trs.getInt(&quot;sem&quot;);</span>
+<span class="fc" id="L404">        int curYear = trs.getInt(&quot;year&quot;);</span>
+<span class="fc" id="L405">        tss.close();</span>
+
+<span class="fc" id="L407">        String coursesOffered = &quot;SELECT * FROM offered WHERE sem=&quot; + Integer.toString(curSem) + &quot; AND year=&quot; + Integer.toString(curYear) + &quot; AND status=0;&quot;;</span>
+<span class="fc" id="L408">        Statement stco = con.createStatement();</span>
+<span class="fc" id="L409">        ResultSet rsco = stco.executeQuery(coursesOffered);</span>
+<span class="fc bfc" id="L410" title="All 2 branches covered.">        if (rsco.next()) {</span>
+<span class="fc" id="L411">            System.out.println(&quot;Grades of all the offered courses in the current semester have not been uploaded by the instructor&quot;);</span>
+<span class="fc" id="L412">            System.out.println(&quot;So, the semester cannot be ended unless all grades have been uploaded.\n&quot;);</span>
+<span class="fc" id="L413">            return 0;</span>
+        } else {
+<span class="fc" id="L415">            String newTime = &quot;UPDATE time_frame SET status=0 WHERE sem=&quot; + Integer.toString(curSem) + &quot; AND year=&quot; + Integer.toString(curYear) + &quot;;&quot;;</span>
+<span class="fc" id="L416">            Statement stnt = con.createStatement();</span>
+<span class="fc" id="L417">            stnt.executeUpdate(newTime);</span>
+<span class="fc" id="L418">            curSem++;</span>
+<span class="pc bpc" id="L419" title="1 of 2 branches missed.">            if (curSem == 3) {</span>
+<span class="fc" id="L420">                curSem = 1;</span>
+<span class="fc" id="L421">                curYear++;</span>
+            }
+<span class="fc" id="L423">            String timeChange = &quot;INSERT INTO time_frame VALUES(&quot; + Integer.toString(curSem) + &quot;, &quot; + Integer.toString(curYear) + &quot;, 1);&quot;;</span>
+<span class="fc" id="L424">            Statement stct = con.createStatement();</span>
+<span class="fc" id="L425">            stct.executeUpdate(timeChange);</span>
+<span class="fc" id="L426">            stnt.close();</span>
+
+<span class="fc" id="L428">            String createDeadline = &quot;INSERT INTO deadlines VALUES(1, 1, 1, &quot; + Integer.toString(curSem) + &quot;, &quot; + Integer.toString(curYear) + &quot;);&quot;;</span>
+<span class="fc" id="L429">            Statement st = con.createStatement();</span>
+<span class="fc" id="L430">            st.executeUpdate(createDeadline);</span>
+<span class="fc" id="L431">            System.out.println(&quot;Timeline successfully changed.&quot;);</span>
+<span class="fc" id="L432">            System.out.println(&quot;New Semester has started!\n&quot;);</span>
+<span class="fc" id="L433">            st.close();</span>
+
+<span class="fc" id="L435">            return 1;</span>
+        }
+    }
+
+    public int checkGraduation(String stuEmail) throws SQLException {
+<span class="fc" id="L440">        int graduated = 1;</span>
+//        System.out.println(&quot;Enter student email: &quot;);
+//        Scanner sc = new Scanner(System.in);
+//        String stuEmail = sc.nextLine();
+        // fulfill all required credits (program, hs, ms, open)
+<span class="fc" id="L445">        String studentDetails = &quot;SELECT * FROM student WHERE email='&quot; + stuEmail + &quot;';&quot;;</span>
+<span class="fc" id="L446">        Statement sttd = con.createStatement();</span>
+<span class="fc" id="L447">        ResultSet rstd = sttd.executeQuery(studentDetails);</span>
+<span class="fc" id="L448">        rstd.next();</span>
+<span class="fc" id="L449">        String dept = rstd.getString(&quot;dept&quot;);</span>
+<span class="fc" id="L450">        int year = rstd.getInt(&quot;year_joining&quot;);</span>
+<span class="fc" id="L451">        String fetchCurriculum = &quot;SELECT * FROM ug_curriculum WHERE batch=&quot; + Integer.toString(year) + &quot; AND dept='&quot; + dept + &quot;';&quot;;</span>
+<span class="fc" id="L452">        Statement stfc = con.createStatement();</span>
+<span class="fc" id="L453">        ResultSet rsfc = stfc.executeQuery(fetchCurriculum);</span>
+<span class="fc" id="L454">        rsfc.next();</span>
+<span class="fc" id="L455">        double creditsReq = rsfc.getDouble(&quot;total_credits&quot;);</span>
+<span class="fc" id="L456">        double doneCredits = 0;</span>
+//        int coreCredits = rsfc.getInt(&quot;program_credits&quot;);
+//        int hsCredits = rsfc.getInt(&quot;hs_credits&quot;);
+//        int openCredits = rsfc.getInt(&quot;open_credits&quot;);
+//        int msCredits = rsfc.getInt(&quot;ms_credits&quot;);
+<span class="fc" id="L461">        String listCourses = rsfc.getString(&quot;courses&quot;);</span>
+<span class="fc" id="L462">        String[] courses = listCourses.split(&quot;,&quot;);</span>
+//        String listType = rsfc.getString(&quot;type&quot;);
+//        String[] type = listType.split(&quot;,&quot;);
+<span class="fc" id="L465">        Map&lt;String, Integer&gt; courseDone = new HashMap&lt;&gt;();</span>
+<span class="pc bpc" id="L466" title="1 of 2 branches missed.">        for (String course : courses) {</span>
+<span class="fc" id="L467">            String checkDone = &quot;SELECT * FROM grades WHERE email='&quot;</span>
+                    + stuEmail + &quot;' AND course_code='&quot; + course
+                    + &quot;' AND grade&lt;&gt;'F';&quot;;
+<span class="fc" id="L470">            Statement stcd = con.createStatement();</span>
+<span class="fc" id="L471">            ResultSet rscd = stcd.executeQuery(checkDone);</span>
+<span class="fc bfc" id="L472" title="All 2 branches covered.">            if (!rscd.next()) {</span>
+<span class="fc" id="L473">                graduated = 0;</span>
+<span class="fc" id="L474">                break;</span>
+            }
+<span class="fc" id="L476">            courseDone.put(course, 1);</span>
+<span class="fc" id="L477">            String countCreds = &quot;SELECT * FROM course WHERE code='&quot; + course + &quot;'&quot;;</span>
+<span class="fc" id="L478">            Statement stcc = con.createStatement();</span>
+<span class="fc" id="L479">            ResultSet rscc = stcc.executeQuery(countCreds);</span>
+<span class="fc" id="L480">            rscc.next(); // assumption course exists</span>
+<span class="fc" id="L481">            doneCredits += rscc.getDouble(&quot;c&quot;);</span>
+        }
+<span class="pc bpc" id="L483" title="1 of 2 branches missed.">        if (graduated == 0) {</span>
+<span class="fc" id="L484">            System.out.println(&quot;Student: &quot; + stuEmail + &quot; not GRADUATED.&quot;);</span>
+<span class="fc" id="L485">            return graduated;</span>
+        }
+<span class="nc" id="L487">        String electiveAdd = &quot;SELECT * FROM grades WHERE email='&quot; + stuEmail + &quot;' AND grade&lt;&gt;='F';&quot;;</span>
+<span class="nc" id="L488">        Statement stea = con.createStatement();</span>
+<span class="nc" id="L489">        ResultSet rsea = stea.executeQuery(electiveAdd);</span>
+<span class="nc bnc" id="L490" title="All 2 branches missed.">        while (rsea.next()) {</span>
+<span class="nc" id="L491">            String course = rsea.getString(&quot;course_code&quot;);</span>
+<span class="nc bnc" id="L492" title="All 2 branches missed.">            if (courseDone.get(course) == 1) {</span>
+<span class="nc" id="L493">                continue;</span>
+            }
+<span class="nc" id="L495">            String countCreds = &quot;SELECT * FROM course WHERE code='&quot; + course + &quot;'&quot;;</span>
+<span class="nc" id="L496">            Statement stcc = con.createStatement();</span>
+<span class="nc" id="L497">            ResultSet rscc = stcc.executeQuery(countCreds);</span>
+<span class="nc" id="L498">            rscc.next(); // assumption course exists</span>
+<span class="nc" id="L499">            doneCredits += rscc.getDouble(&quot;c&quot;);</span>
+<span class="nc" id="L500">        }</span>
+//        if (doneCredits &lt; creditsReq) {
+//            graduated = 0;
+//        }
+<span class="nc bnc" id="L504" title="All 2 branches missed.">        if (doneCredits &lt; creditsReq) {</span>
+<span class="nc" id="L505">            System.out.println(&quot;Student: &quot; + stuEmail + &quot; not GRADUATED&quot;);</span>
+        } else {
+<span class="nc" id="L507">            System.out.println(&quot;Student: &quot; + stuEmail + &quot; GRADUATED&quot;);</span>
+        }
+<span class="nc" id="L509">        return graduated;</span>
+    }
+
+    public int changeDeadlines(int check) throws SQLException {
+<span class="fc" id="L513">        String timeFetch = &quot;SELECT * FROM time_frame WHERE status=1;&quot;;</span>
+<span class="fc" id="L514">        Statement tss = con.createStatement();</span>
+<span class="fc" id="L515">        ResultSet trs = tss.executeQuery(timeFetch);</span>
+<span class="fc" id="L516">        trs.next();</span>
+<span class="fc" id="L517">        int curSem = trs.getInt(&quot;sem&quot;);</span>
+<span class="fc" id="L518">        int curYear = trs.getInt(&quot;year&quot;);</span>
+<span class="fc" id="L519">        tss.close();</span>
+
+//        Scanner sc = new Scanner(System.in);
+//        System.out.println(&quot;Press 0 to change deadline for offering course&quot;);
+//        System.out.println(&quot;Press 1 to change deadline for enrolling course&quot;);
+//        System.out.println(&quot;Press 2 to change deadline for uploading grades&quot;);
+//        int check = sc.nextInt();
+//        sc.nextLine();
+<span class="fc" id="L527">        String query = &quot;SELECT * FROM deadlines WHERE sem=&quot; + Integer.toString(curSem) + &quot; AND year=&quot; + Integer.toString(curYear) + &quot;;&quot;;</span>
+<span class="fc" id="L528">        Statement st = con.createStatement();</span>
+<span class="fc" id="L529">        ResultSet rs = st.executeQuery(query);</span>
+<span class="fc" id="L530">        rs.next();</span>
+<span class="fc bfc" id="L531" title="All 2 branches covered.">        if (check == 0) {</span>
+<span class="fc" id="L532">            int get = rs.getInt(&quot;offer_status&quot;);</span>
+<span class="fc bfc" id="L533" title="All 2 branches covered.">            if (get == 0) {</span>
+<span class="fc" id="L534">                get = 1;</span>
+<span class="fc" id="L535">                String updateEnable = &quot;UPDATE deadlines SET offer_status=&quot; + Integer.toString(get) + &quot; WHERE sem=&quot; + Integer.toString(curSem) + &quot; AND year=&quot; + Integer.toString(curYear) + &quot;;&quot;;</span>
+<span class="fc" id="L536">                Statement stue = con.createStatement();</span>
+<span class="fc" id="L537">                stue.executeUpdate(updateEnable);</span>
+<span class="fc" id="L538">                System.out.println(&quot;Course offering now allowed.&quot;);</span>
+<span class="fc" id="L539">                return 1;</span>
+            } else {
+<span class="fc" id="L541">                get = 0;</span>
+<span class="fc" id="L542">                String updateEnable = &quot;UPDATE deadlines SET offer_status=&quot; + Integer.toString(get) + &quot; WHERE sem=&quot; + Integer.toString(curSem) + &quot; AND year=&quot; + Integer.toString(curYear) + &quot;;&quot;;</span>
+<span class="fc" id="L543">                Statement stue = con.createStatement();</span>
+<span class="fc" id="L544">                stue.executeUpdate(updateEnable);</span>
+<span class="fc" id="L545">                System.out.println(&quot;Course offering now not allowed.&quot;);</span>
+<span class="fc" id="L546">                return 1;</span>
+            }
+<span class="fc bfc" id="L548" title="All 2 branches covered.">        } else if (check == 1) {</span>
+<span class="fc" id="L549">            int get = rs.getInt(&quot;enroll_status&quot;);</span>
+<span class="fc bfc" id="L550" title="All 2 branches covered.">            if (get == 0) {</span>
+<span class="fc" id="L551">                get = 1;</span>
+<span class="fc" id="L552">                String updateEnable = &quot;UPDATE deadlines SET enroll_status=&quot; + Integer.toString(get) + &quot; WHERE sem=&quot; + Integer.toString(curSem) + &quot; AND year=&quot; + Integer.toString(curYear) + &quot;;&quot;;</span>
+<span class="fc" id="L553">                Statement stue = con.createStatement();</span>
+<span class="fc" id="L554">                stue.executeUpdate(updateEnable);</span>
+<span class="fc" id="L555">                System.out.println(&quot;Course enrollment now allowed.&quot;);</span>
+<span class="fc" id="L556">                return 1;</span>
+            } else {
+<span class="fc" id="L558">                get = 0;</span>
+
+<span class="fc" id="L560">                String updateEnable = &quot;UPDATE deadlines SET enroll_status=&quot; + Integer.toString(get) + &quot; WHERE sem=&quot; + Integer.toString(curSem) + &quot; AND year=&quot; + Integer.toString(curYear) + &quot;;&quot;;</span>
+<span class="fc" id="L561">                Statement stue = con.createStatement();</span>
+<span class="fc" id="L562">                stue.executeUpdate(updateEnable);</span>
+<span class="fc" id="L563">                System.out.println(&quot;Course enrollment now not allowed.&quot;);</span>
+<span class="fc" id="L564">                return 1;</span>
+            }
+<span class="fc bfc" id="L566" title="All 2 branches covered.">        } else if (check == 2) {</span>
+<span class="fc" id="L567">            int get = rs.getInt(&quot;grade_status&quot;);</span>
+<span class="fc bfc" id="L568" title="All 2 branches covered.">            if (get == 0) {</span>
+<span class="fc" id="L569">                get = 1;</span>
+<span class="fc" id="L570">                String updateEnable = &quot;UPDATE deadlines SET grade_status=&quot; + Integer.toString(get) + &quot; WHERE sem=&quot; + Integer.toString(curSem) + &quot; AND year=&quot; + Integer.toString(curYear) + &quot;;&quot;;</span>
+<span class="fc" id="L571">                Statement stue = con.createStatement();</span>
+<span class="fc" id="L572">                stue.executeUpdate(updateEnable);</span>
+<span class="fc" id="L573">                System.out.println(&quot;Grade upload now allowed.&quot;);</span>
+<span class="fc" id="L574">                return 1;</span>
+            } else {
+<span class="fc" id="L576">                get = 0;</span>
+<span class="fc" id="L577">                String updateEnable = &quot;UPDATE deadlines SET grade_status=&quot; + Integer.toString(get) + &quot; WHERE sem=&quot; + Integer.toString(curSem) + &quot; AND year=&quot; + Integer.toString(curYear) + &quot;;&quot;;</span>
+<span class="fc" id="L578">                Statement stue = con.createStatement();</span>
+<span class="fc" id="L579">                stue.executeUpdate(updateEnable);</span>
+<span class="fc" id="L580">                System.out.println(&quot;Grade upload now not allowed.&quot;);</span>
+<span class="fc" id="L581">                return 1;</span>
+            }
+        } else {
+<span class="fc" id="L584">            System.out.println(&quot;INVALID Input&quot;);</span>
+<span class="fc" id="L585">            return 0;</span>
+        }
+    }
+}
+//    public String acadProcedures() throws SQLException, IOException {
+//        // edit course catalog --
+//        // view all grades --
+//        // generate student transcript (.txt) (marksheet)
+//        Scanner sc = new Scanner(System.in);
+//        System.out.println(&quot;Press 0 to Edit Course Catalog&quot;);
+//        System.out.println(&quot;Press 1 to view Grade of all Students&quot;);
+//        System.out.println(&quot;Press 2 to Generate Transcript of Students&quot;);
+//        System.out.println(&quot;Press 3 to end the current Semester&quot;);
+//        System.out.println(&quot;Press 4 to check if a student has graduated&quot;);
+//        System.out.println(&quot;Press 5 to change deadlines for offering, enrolling or grades upload&quot;);
+//        System.out.println(&quot;Press 6 to go back&quot;);
+//        int ch = sc.nextInt();
+//        sc.nextLine();
+//        if(ch == 0) {
+//            System.out.println(&quot;Press 1 to add course\nPress 2 to view course catalog\nPress 3 to delete a course from catalog&quot;);
+//            int catalog = sc.nextInt(); // update course catalog
+//            sc.nextLine();
+//            if (catalog == 1) {
+//                System.out.println(&quot;Enter course code: &quot;);
+//                String code = sc.nextLine();
+//                System.out.println(code + &quot;\n&quot; + &quot;Enter course name: &quot;);
+//                String name = sc.nextLine();
+//                System.out.println(name + &quot;\n&quot; +&quot;Enter lecture: &quot;);
+//                int l = sc.nextInt();
+//                System.out.println(&quot;Enter tutorial: &quot;);
+//                int t = sc.nextInt();
+//                System.out.println(&quot;Enter practical: &quot;);
+//                int p = sc.nextInt();
+//                System.out.println(&quot;Enter study hours: &quot;);
+//                int s = sc.nextInt();
+//                System.out.println(&quot;Enter credits: &quot;);
+//                double c = sc.nextDouble();
+//                sc.nextLine();
+//                System.out.println(&quot;Enter course department: &quot;);
+//                String dept = sc.nextLine();
+//                System.out.println(&quot;How many pre-requisites does this course have?&quot;);
+//                int numPrereq = sc.nextInt();
+//                sc.nextLine();
+//                String[] preCode = new String[numPrereq];
+//                int[] preGrade = new int[numPrereq];
+//                for(int i=0; i&lt;numPrereq; i++) {
+//                    System.out.println(&quot;Please enter course code (&quot; + (i+1) + &quot;): &quot;);
+//                    preCode[i] = sc.nextLine();
+//                    System.out.println(&quot;Please enter pre-requisite grade requirement [10/9/8/7/6/5] (enter 0 if no grade criteria): &quot;);
+//                    preGrade[i] = sc.nextInt();
+//                    sc.nextLine();
+//                }
+//                addCourseCatalog(code, name, l, t, p, s, c, dept, preCode, preGrade, numPrereq);
+//            }
+//            else if (catalog == 2) { // done
+//                readCourseCatalog();
+//            }
+//            else if (catalog == 3) {
+//                System.out.println(&quot;Enter course code: &quot;);
+//                String code = sc.nextLine();
+//                deleteCourseCatalog(code);
+//            }
+//            else {
+//                System.out.println(&quot;Invalid input! Please try again.&quot;);
+//            }
+////            editCourseCatalog(); // done, ret
+//        }
+//        else if (ch == 1) {
+//            viewGrades(); // done
+//        }
+//        else if (ch == 2) {
+//            generateTranscript(); // done
+//        }
+//        else if (ch == 3) {
+//            // start sem
+//            endSemester(); // done, ret
+//        }
+//        else if (ch == 4) { // done, ret
+//            System.out.println(&quot;Enter student email: &quot;);
+//            String stuEmail = sc.nextLine();
+//            checkGraduation(stuEmail);
+//
+//        }
+//        else if (ch == 5) { // done, ret
+//            System.out.println(&quot;Press 0 to change deadline for offering course&quot;);
+//            System.out.println(&quot;Press 1 to change deadline for enrolling course&quot;);
+//            System.out.println(&quot;Press 2 to change deadline for uploading grades&quot;);
+//            int check = sc.nextInt();
+//            sc.nextLine();
+//            changeDeadlines(check);
+//
+//        }
+//        else if (ch == 6) {
+//            System.out.println(&quot;BACK&quot;);
+//            return &quot;BACK&quot;;
+//        }
+//        else {
+//            System.out.println(&quot;Invalid! Enter Valid Input as mentioned.&quot;);
+//            return &quot;Invalid! Enter Valid Input as mentioned.&quot;;
+//        }
+//        return &quot; &quot;;
+//    }
+//}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

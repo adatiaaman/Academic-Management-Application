@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.swe.server.StudentTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-03-07T16:55:50" hostname="DESKTOP-6LO900O" time="0.123">
+  <properties/>
+  <testcase name="calculateCGPA()" classname="org.swe.server.StudentTest" time="0.028"/>
+  <testcase name="enrollDropCourse()" classname="org.swe.server.StudentTest" time="0.084"/>
+  <testcase name="viewGrades()" classname="org.swe.server.StudentTest" time="0.009"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

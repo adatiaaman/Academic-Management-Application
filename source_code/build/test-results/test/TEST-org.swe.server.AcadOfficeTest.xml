@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.swe.server.AcadOfficeTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2023-03-07T16:55:50" hostname="DESKTOP-6LO900O" time="0.222">
+  <properties/>
+  <testcase name="generateTranscript()" classname="org.swe.server.AcadOfficeTest" time="0.066"/>
+  <testcase name="changeDeadlines()" classname="org.swe.server.AcadOfficeTest" time="0.032"/>
+  <testcase name="readCourseCatalog()" classname="org.swe.server.AcadOfficeTest" time="0.012"/>
+  <testcase name="endSemester()" classname="org.swe.server.AcadOfficeTest" time="0.023"/>
+  <testcase name="checkGraduation()" classname="org.swe.server.AcadOfficeTest" time="0.018"/>
+  <testcase name="deleteCourseCatalog()" classname="org.swe.server.AcadOfficeTest" time="0.005"/>
+  <testcase name="viewGrades()" classname="org.swe.server.AcadOfficeTest" time="0.027"/>
+  <testcase name="addCourseCatalog()" classname="org.swe.server.AcadOfficeTest" time="0.026"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

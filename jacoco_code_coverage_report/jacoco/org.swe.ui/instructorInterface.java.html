@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>instructorInterface.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mini_project</a> &gt; <a href="index.source.html" class="el_package">org.swe.ui</a> &gt; <span class="el_source">instructorInterface.java</span></div><h1>instructorInterface.java</h1><pre class="source lang-java linenums">package org.swe.ui;
+
+import org.swe.server.instructor;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class instructorInterface {
+    public String email;
+    Connection con;
+
+<span class="fc" id="L16">    public instructorInterface(String email, Connection con) {</span>
+<span class="fc" id="L17">        this.email = email;</span>
+<span class="fc" id="L18">        this.con = con;</span>
+<span class="fc" id="L19">    }</span>
+
+    public String instProcedures() throws SQLException, IOException {
+        // view all grades -- * status
+        // register: offered --
+        // deregister course: remove from (offered, grades) ***
+        // update grades via .csv -*
+
+<span class="fc" id="L27">        String timeFetch = &quot;SELECT * FROM time_frame WHERE status=1;&quot;;</span>
+<span class="fc" id="L28">        Statement tss = con.createStatement();</span>
+<span class="fc" id="L29">        ResultSet trs = tss.executeQuery(timeFetch);</span>
+<span class="fc" id="L30">        trs.next();</span>
+<span class="fc" id="L31">        int curSem = trs.getInt(&quot;sem&quot;);</span>
+<span class="fc" id="L32">        int curYear = trs.getInt(&quot;year&quot;);</span>
+<span class="fc" id="L33">        tss.close();</span>
+
+<span class="fc" id="L35">        instructor inst = new instructor(email, con);</span>
+
+<span class="fc" id="L37">        Scanner sc = new Scanner(System.in);</span>
+
+<span class="fc" id="L39">        System.out.println(&quot;Press 0 to view Grade of all Students&quot;);</span>
+<span class="fc" id="L40">        System.out.println(&quot;Press 1 to Offer a Course&quot;);</span>
+<span class="fc" id="L41">        System.out.println(&quot;Press 2 to Remove an Offering&quot;);</span>
+<span class="fc" id="L42">        System.out.println(&quot;Press 3 to Download student details for an Offering&quot;);</span>
+<span class="fc" id="L43">        System.out.println(&quot;Press 4 to update student grades (via .csv)&quot;);</span>
+<span class="fc" id="L44">        System.out.println(&quot;Press 5 to go back&quot;);</span>
+
+<span class="fc" id="L46">        int ch = sc.nextInt();</span>
+<span class="fc" id="L47">        sc.nextLine();</span>
+
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if(ch == 0) {</span>
+<span class="fc" id="L50">            String offeredCourses = &quot;SELECT * FROM offered WHERE inst_email='&quot;</span>
+                    + email + &quot;' AND status=1;&quot;;
+<span class="fc" id="L52">            Statement stoc = con.createStatement();</span>
+<span class="fc" id="L53">            ResultSet rsoc = stoc.executeQuery(offeredCourses);</span>
+<span class="fc" id="L54">            int cnt = 0;</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">            while (rsoc.next()) {</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">                if (cnt == 0) {</span>
+<span class="fc" id="L57">                    System.out.println(&quot;List of courses offered by you of which grades are uploaded: &quot;);</span>
+                }
+<span class="fc" id="L59">                cnt++;</span>
+<span class="fc" id="L60">                System.out.println(rsoc.getInt(&quot;offer_id&quot;) + &quot;: &quot; + rsoc.getString(&quot;course_code&quot;));</span>
+            }
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            if (cnt == 0) {</span>
+<span class="fc" id="L63">                System.out.println(&quot;No courses offered by you where grades are uploaded.&quot;);</span>
+            }
+            else{
+<span class="fc" id="L66">                System.out.println(&quot;Please enter offer ID of the course for which you want to view grades: &quot;);</span>
+<span class="fc" id="L67">                int courseId = sc.nextInt();</span>
+<span class="fc" id="L68">                sc.nextLine();</span>
+<span class="fc" id="L69">                inst.viewGrades(courseId); // done</span>
+            }
+<span class="fc" id="L71">            stoc.close();</span>
+<span class="fc" id="L72">        }</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        else if (ch == 1) {</span>
+<span class="fc" id="L74">            System.out.println(&quot;\nCourse Offering (&quot; + curSem + &quot;, &quot; + curYear +&quot;)&quot;);</span>
+<span class="fc" id="L75">            System.out.println(&quot;Please enter course code: &quot;);</span>
+<span class="fc" id="L76">            String code = sc.nextLine();</span>
+<span class="fc" id="L77">            System.out.println(&quot;Enter CGPA criteria: &quot;);</span>
+<span class="fc" id="L78">            float cgpaCriteria = sc.nextFloat();</span>
+<span class="fc" id="L79">            inst.offerCourse(code, cgpaCriteria); // done, ret</span>
+<span class="fc" id="L80">        }</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        else if (ch == 2) {</span>
+<span class="fc" id="L82">            String offeredCourses = &quot;SELECT * FROM offered WHERE sem=&quot;</span>
+<span class="fc" id="L83">                    + Integer.toString(curSem) + &quot; AND year=&quot;</span>
+<span class="fc" id="L84">                    + Integer.toString(curYear) + &quot; AND inst_email='&quot;</span>
+                    + email + &quot;' AND status=0;&quot;;
+<span class="fc" id="L86">            Statement stoc = con.createStatement();</span>
+<span class="fc" id="L87">            ResultSet rsoc = stoc.executeQuery(offeredCourses);</span>
+<span class="fc" id="L88">            int cnt = 0;</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">            while (rsoc.next()) {</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">                if (cnt == 0) {</span>
+<span class="fc" id="L91">                    System.out.println(&quot;List of courses offered by you in the current semester (&quot; + curSem + &quot;, &quot; + curYear + &quot;): &quot;);</span>
+                }
+<span class="fc" id="L93">                cnt++;</span>
+<span class="fc" id="L94">                System.out.println(rsoc.getInt(&quot;offer_id&quot;) + &quot;: &quot; + rsoc.getString(&quot;course_code&quot;));</span>
+            }
+<span class="fc bfc" id="L96" title="All 2 branches covered.">            if(cnt == 0) {</span>
+<span class="fc" id="L97">                System.out.println(&quot;No course offered by you.&quot;);</span>
+            }
+            else {
+<span class="fc" id="L100">                System.out.println(&quot;Enter the course code of the course offering you want to deregister in the current semester: &quot;);</span>
+//                String offerId = sc.nextInt();
+//                sc.nextLine();
+//                removeOffer(offerId); // done, ret
+<span class="fc" id="L104">                String courseCode = sc.nextLine();</span>
+<span class="fc" id="L105">                inst.removeOffer(courseCode);</span>
+            }
+<span class="fc" id="L107">            stoc.close();</span>
+<span class="fc" id="L108">        }</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        else if(ch == 3) {</span>
+<span class="fc" id="L110">            String offeredCourses = &quot;SELECT * FROM offered WHERE sem=&quot;</span>
+<span class="fc" id="L111">                    + Integer.toString(curSem) + &quot; AND year=&quot;</span>
+<span class="fc" id="L112">                    + Integer.toString(curYear) + &quot; AND inst_email='&quot;</span>
+                    + email + &quot;';&quot;;
+<span class="fc" id="L114">            Statement stoc = con.createStatement();</span>
+<span class="fc" id="L115">            ResultSet rsoc = stoc.executeQuery(offeredCourses);</span>
+<span class="fc" id="L116">            int cnt = 0;</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">            while (rsoc.next()) {</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">                if (cnt == 0) {</span>
+<span class="fc" id="L119">                    System.out.println(&quot;List of courses offered by you: &quot;);</span>
+                }
+<span class="fc" id="L121">                cnt++;</span>
+<span class="fc" id="L122">                System.out.println(rsoc.getInt(&quot;offer_id&quot;) + &quot;: &quot; + rsoc.getString(&quot;course_code&quot;));</span>
+            }
+<span class="fc bfc" id="L124" title="All 2 branches covered.">            if (cnt == 0) {</span>
+<span class="fc" id="L125">                System.out.println(&quot;No courses offered by you.&quot;);</span>
+
+            }
+            else {
+<span class="fc" id="L129">                System.out.println(&quot;Please enter offer ID for the course as per above list: &quot;);</span>
+<span class="fc" id="L130">                int courseId = sc.nextInt();</span>
+<span class="fc" id="L131">                sc.nextLine();</span>
+<span class="fc" id="L132">                inst.downloadStudentDetails(courseId); // done</span>
+            }
+<span class="fc" id="L134">            stoc.close();</span>
+<span class="fc" id="L135">        }</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        else if (ch == 4) {</span>
+<span class="fc" id="L137">            System.out.println(&quot;Enter file name (eg. 'grades_[Offer_ID]'): &quot;);</span>
+<span class="fc" id="L138">            String fileName = sc.nextLine();</span>
+<span class="fc" id="L139">            String offerId = fileName.substring(7);</span>
+//            int id = Integer.parseInt(offerId);
+
+<span class="fc" id="L142">            inst.uploadGrades(fileName, offerId); // done, ret</span>
+<span class="fc" id="L143">        }</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        else if (ch == 5) {</span>
+<span class="fc" id="L145">            System.out.println(&quot;BACK&quot;);</span>
+<span class="fc" id="L146">            return &quot;BACK&quot;;</span>
+        }
+        else {
+<span class="fc" id="L149">            System.out.println(&quot;Invalid! Enter Valid Input as mentioned.&quot;);</span>
+<span class="fc" id="L150">            return &quot;Invalid! Enter Valid Input as mentioned.&quot;;</span>
+        }
+<span class="fc" id="L152">        return &quot; &quot;;</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,201 @@
+-- UML
+-- class diagram
+-- object/communication diagram for code flow and test cases, and usage with database
+-- component diagram to show link and connections
+-- package diagram for code struction - main, test
+-- composite structure diagram for internal details of a class
+-- activity diagram and state machine diagram for implementation/execution flow
+
+\c postgres
+DROP DATABASE mini_project;
+
+
+CREATE DATABASE mini_project;
+\c mini_project
+
+
+CREATE TABLE auth(
+email VARCHAR(30) NOT NULL,
+password VARCHAR(30) NOT NULL,
+contact VARCHAR(10),
+
+PRIMARY KEY(email)
+);
+
+CREATE TABLE login_log(
+log_id INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+email VARCHAR(30) NOT NULL,
+time_stamp TIMESTAMP,
+
+FOREIGN KEY(email) REFERENCES auth(email)
+);
+
+
+CREATE TABLE department(
+name VARCHAR(20) NOT NULL,
+-- CSE, EE, HS, MA
+PRIMARY KEY(name)
+);
+
+
+CREATE TABLE student(
+-- student_id INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+entry_num VARCHAR(11) NOT NULL,
+name VARCHAR(20) NOT NULL,
+email VARCHAR(30) NOT NULL,
+year_joining INT NOT NULL,
+dept VARCHAR(20) NOT NULL,
+
+
+PRIMARY KEY(email),
+FOREIGN KEY(email) REFERENCES auth(email),
+FOREIGN KEY(dept) REFERENCES department(name)
+);
+
+
+CREATE TABLE acad_office(
+email VARCHAR(30) NOT NULL,
+name VARCHAR(20) NOT NULL,
+
+PRIMARY KEY(email),
+FOREIGN KEY(email) REFERENCES auth(email)
+);
+
+
+CREATE TABLE time_frame(
+sem INT,
+year INT,
+status INT,
+
+PRIMARY KEY(sem, year)
+);
+
+
+CREATE TABLE deadlines(
+offer_status INT,
+enroll_status INT,
+grade_status INT,
+sem INT,
+year INT,
+
+PRIMARY KEY(sem, year)
+);
+
+
+CREATE TABLE instructor(
+-- inst_id INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+name VARCHAR(20) NOT NULL,
+email VARCHAR(30) NOT NULL,
+year_joining INT NOT NULL,
+dept VARCHAR(20) NOT NULL,
+
+PRIMARY KEY(email),
+FOREIGN KEY(email) REFERENCES auth(email),
+FOREIGN KEY(dept) REFERENCES department(name)
+);
+
+
+CREATE TABLE course(
+-- course_id INT NOT NULL GENERATED ALWAYS AS IDENTITY, 
+code VARCHAR(6) NOT NULL, 
+name VARCHAR(20) NOT NULL, 
+l INT, 
+t INT, 
+p INT, 
+s INT,
+c NUMERIC(2, 1), 
+dept VARCHAR(20) NOT NULL,
+status INT, -- 0: deleted
+
+PRIMARY KEY(code),
+FOREIGN KEY(dept) REFERENCES department(name)
+);
+
+
+CREATE TABLE prereq(
+course_code VARCHAR(6) NOT NULL,
+prereq_id VARCHAR(6) NOT NULL,
+grade INT NOT NULL,
+
+PRIMARY KEY(course_code, prereq_id),
+FOREIGN KEY(course_code) REFERENCES course(code),
+FOREIGN KEY(prereq_id) REFERENCES course(code)
+);
+
+
+CREATE TABLE ug_curriculum(
+batch INT NOT NULL,
+dept VARCHAR(20) NOT NULL,
+courses text,
+-- type text,
+total_credits REAL,
+-- core_credits INT, -- 0
+-- hs_credits INT, -- 1
+-- ms_credits INT, -- 2
+-- open_credits INT, -- 3
+
+PRIMARY KEY(batch, dept),
+FOREIGN KEY(dept) REFERENCES department(name)
+);
+
+CREATE TABLE credit_limit(
+sem1 INT,
+sem2 INT,
+sem3 INT,
+sem4 INT,
+sem5 INT,
+sem6 INT,
+sem7 INT,
+sem8 INT
+);
+
+
+CREATE TABLE offered(
+offer_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+course_code VARCHAR(6) NOT NULL,
+inst_email VARCHAR(30) NOT NULL,
+cgpa_cutoff REAL,
+sem INT, 
+year INT,
+status INT, -- 0 - ongoing, 1 - finished
+-- section INT,
+-- program INT, -- core, elective (1/0)
+-- slot_id INT,
+
+FOREIGN KEY(course_code) REFERENCES course(code),
+FOREIGN KEY(inst_email) REFERENCES instructor(email)
+-- FOREIGN KEY(slot_id) REFERENCES slot(slot_id)
+);
+
+
+CREATE TABLE grades(
+email VARCHAR(30) NOT NULL, 
+offer_id INT NOT NULL,
+course_code VARCHAR(6) NOT NULL,
+grade VARCHAR(2) NOT NULL,
+
+PRIMARY KEY(email, offer_id),
+FOREIGN KEY(email) REFERENCES student(email),
+FOREIGN KEY(offer_id) REFERENCES offered(offer_id),
+FOREIGN KEY(course_code) REFERENCES course(code)
+);
+
+
+CREATE TABLE register_student(
+email VARCHAR(30) NOT NULL, 
+offer_id INT NOT NULL,
+course_code VARCHAR(6) NOT NULL, 
+sem INT NOT NULL, 
+year INT NOT NULL, 
+-- section INT NOT NULL,
+-- pc_pe INT NOT NULL,
+
+-- core, elective dept wise
+PRIMARY KEY(email, offer_id, course_code, sem, year),
+FOREIGN KEY(email) REFERENCES student(email),
+FOREIGN KEY(course_code) REFERENCES course(code),
+FOREIGN KEY(offer_id) REFERENCES offered(offer_id)
+);
+
+
+-------------------------------------------------------------------------------------

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>acadOfficeInterface.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mini_project</a> &gt; <a href="index.source.html" class="el_package">org.swe.ui</a> &gt; <span class="el_source">acadOfficeInterface.java</span></div><h1>acadOfficeInterface.java</h1><pre class="source lang-java linenums">package org.swe.ui;
+
+import org.swe.server.acadOffice;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class acadOfficeInterface {
+    public String email;
+    Connection con;
+<span class="fc" id="L13">    public acadOfficeInterface(String email, Connection con){</span>
+<span class="fc" id="L14">        this.email = email;</span>
+<span class="fc" id="L15">        this.con = con;</span>
+<span class="fc" id="L16">    }</span>
+    public String acadProcedures() throws SQLException, IOException {
+        // edit course catalog --
+        // view all grades --
+        // generate student transcript (.txt) (marksheet)
+
+<span class="fc" id="L22">        acadOffice dean = new acadOffice(email, con);</span>
+
+<span class="fc" id="L24">        Scanner sc = new Scanner(System.in);</span>
+
+<span class="fc" id="L26">        System.out.println(&quot;Press 0 to Edit Course Catalog&quot;);</span>
+<span class="fc" id="L27">        System.out.println(&quot;Press 1 to view Grade of all Students&quot;);</span>
+<span class="fc" id="L28">        System.out.println(&quot;Press 2 to Generate Transcript of Students&quot;);</span>
+<span class="fc" id="L29">        System.out.println(&quot;Press 3 to end the current Semester&quot;);</span>
+<span class="fc" id="L30">        System.out.println(&quot;Press 4 to check if a student has graduated&quot;);</span>
+<span class="fc" id="L31">        System.out.println(&quot;Press 5 to change deadlines for offering, enrolling or grades upload&quot;);</span>
+<span class="fc" id="L32">        System.out.println(&quot;Press 6 to go back&quot;);</span>
+
+<span class="fc" id="L34">        int ch = sc.nextInt();</span>
+<span class="fc" id="L35">        sc.nextLine();</span>
+
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if(ch == 0) {</span>
+<span class="fc" id="L38">            System.out.println(&quot;Press 1 to add course\nPress 2 to view course catalog\nPress 3 to delete a course from catalog&quot;);</span>
+<span class="fc" id="L39">            int catalog = sc.nextInt(); // update course catalog</span>
+<span class="fc" id="L40">            sc.nextLine();</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">            if (catalog == 1) {</span>
+<span class="fc" id="L42">                System.out.println(&quot;Enter course code: &quot;);</span>
+<span class="fc" id="L43">                String code = sc.nextLine();</span>
+<span class="fc" id="L44">                System.out.println(code + &quot;\n&quot; + &quot;Enter course name: &quot;);</span>
+<span class="fc" id="L45">                String name = sc.nextLine();</span>
+<span class="fc" id="L46">                System.out.println(name + &quot;\n&quot; +&quot;Enter lecture: &quot;);</span>
+<span class="fc" id="L47">                int l = sc.nextInt();</span>
+<span class="fc" id="L48">                System.out.println(&quot;Enter tutorial: &quot;);</span>
+<span class="fc" id="L49">                int t = sc.nextInt();</span>
+<span class="fc" id="L50">                System.out.println(&quot;Enter practical: &quot;);</span>
+<span class="fc" id="L51">                int p = sc.nextInt();</span>
+<span class="fc" id="L52">                System.out.println(&quot;Enter study hours: &quot;);</span>
+<span class="fc" id="L53">                int s = sc.nextInt();</span>
+<span class="fc" id="L54">                System.out.println(&quot;Enter credits: &quot;);</span>
+<span class="fc" id="L55">                double c = sc.nextDouble();</span>
+<span class="fc" id="L56">                sc.nextLine();</span>
+<span class="fc" id="L57">                System.out.println(&quot;Enter course department: &quot;);</span>
+<span class="fc" id="L58">                String dept = sc.nextLine();</span>
+<span class="fc" id="L59">                System.out.println(&quot;How many pre-requisites does this course have?&quot;);</span>
+<span class="fc" id="L60">                int numPrereq = sc.nextInt();</span>
+<span class="fc" id="L61">                sc.nextLine();</span>
+<span class="fc" id="L62">                String[] preCode = new String[numPrereq];</span>
+<span class="fc" id="L63">                int[] preGrade = new int[numPrereq];</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">                for(int i=0; i&lt;numPrereq; i++) {</span>
+<span class="fc" id="L65">                    System.out.println(&quot;Please enter course code (&quot; + (i+1) + &quot;): &quot;);</span>
+<span class="fc" id="L66">                    preCode[i] = sc.nextLine();</span>
+<span class="fc" id="L67">                    System.out.println(&quot;Please enter pre-requisite grade requirement [10/9/8/7/6/5] (enter 0 if no grade criteria): &quot;);</span>
+<span class="fc" id="L68">                    preGrade[i] = sc.nextInt();</span>
+<span class="fc" id="L69">                    sc.nextLine();</span>
+                }
+<span class="fc" id="L71">                dean.addCourseCatalog(code, name, l, t, p, s, c, dept, preCode, preGrade, numPrereq);</span>
+<span class="fc" id="L72">            }</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            else if (catalog == 2) { // done</span>
+<span class="fc" id="L74">                dean.readCourseCatalog();</span>
+            }
+<span class="fc bfc" id="L76" title="All 2 branches covered.">            else if (catalog == 3) {</span>
+<span class="fc" id="L77">                System.out.println(&quot;Enter course code: &quot;);</span>
+<span class="fc" id="L78">                String code = sc.nextLine();</span>
+<span class="fc" id="L79">                dean.deleteCourseCatalog(code);</span>
+<span class="fc" id="L80">            }</span>
+            else {
+<span class="fc" id="L82">                System.out.println(&quot;Invalid input! Please try again.&quot;);</span>
+            }
+//            editCourseCatalog(); // done, ret
+<span class="fc" id="L85">        }</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        else if (ch == 1) {</span>
+<span class="fc" id="L87">            dean.viewGrades(); // done</span>
+        }
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        else if (ch == 2) {</span>
+<span class="fc" id="L90">            dean.generateTranscript(); // done</span>
+        }
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        else if (ch == 3) {</span>
+            // start sem
+<span class="nc" id="L94">            dean.endSemester(); // done, ret</span>
+        }
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        else if (ch == 4) { // done, ret</span>
+<span class="fc" id="L97">            System.out.println(&quot;Enter student email: &quot;);</span>
+<span class="fc" id="L98">            String stuEmail = sc.nextLine();</span>
+<span class="fc" id="L99">            dean.checkGraduation(stuEmail);</span>
+
+<span class="fc" id="L101">        }</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        else if (ch == 5) { // done, ret</span>
+<span class="fc" id="L103">            System.out.println(&quot;Press 0 to change deadline for offering course&quot;);</span>
+<span class="fc" id="L104">            System.out.println(&quot;Press 1 to change deadline for enrolling course&quot;);</span>
+<span class="fc" id="L105">            System.out.println(&quot;Press 2 to change deadline for uploading grades&quot;);</span>
+<span class="fc" id="L106">            int check = sc.nextInt();</span>
+<span class="fc" id="L107">            sc.nextLine();</span>
+<span class="fc" id="L108">            dean.changeDeadlines(check);</span>
+
+<span class="fc" id="L110">        }</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        else if (ch == 6) {</span>
+<span class="fc" id="L112">            System.out.println(&quot;BACK&quot;);</span>
+<span class="fc" id="L113">            return &quot;BACK&quot;;</span>
+        }
+        else {
+<span class="fc" id="L116">            System.out.println(&quot;Invalid! Enter Valid Input as mentioned.&quot;);</span>
+<span class="fc" id="L117">            return &quot;Invalid! Enter Valid Input as mentioned.&quot;;</span>
+        }
+<span class="fc" id="L119">        return &quot; &quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
