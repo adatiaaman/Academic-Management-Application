@@ -40,7 +40,7 @@ To run and compile the program:
 <br>
 
 Consists of:
-* UML Diagram (_/uml_)
+* UML Diagram (_/uml_diagram_)
 * JUnit unit testing plan (_TestPlan.md_)
 * JaCoCo code coverage report
 * ER Diagram for database (_/er_diagram_)
