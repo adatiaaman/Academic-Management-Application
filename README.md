@@ -2,11 +2,7 @@
 
 ##### Aman Pankaj Adatia - 2020CSB1154
 
-A multi-user database application for  managing the academics of an academic institute.
-
-Command Line Interface (CLI) to interact with the database.
-
-The functionalities to be supported are based on the academic policies of our institute. 
+A multi-user database application for  managing the academics of an academic institute. Command Line Interface (CLI) to interact with the database. The functionalities to be supported are based on the academic policies of our institute. 
 
 Academic ecosystem for UG programs basically consists of the following stakeholders:
 * Students
