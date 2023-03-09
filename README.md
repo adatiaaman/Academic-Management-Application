@@ -17,25 +17,25 @@ Academic ecosystem for UG programs basically consists of the following stakehold
 
 To run and compile the program:
 
-Setup:
-* Create a PostgreSQL database named (mini_project)
-* Run create table and insert queries as given in _./src/main/resources_ folder in _tables.txt_ and _queries.txt_ respectively.
-* Set local psql database credentials in _config.properties_ file in _./src/main/resources_ folder.
-* Set the current working directory as your project folder.
-* You are set to run the project using below commands.
-* Follow the instructions as printed on terminal after running the project for executing various functionalities implemented.
+* Setup:
+  * Create a PostgreSQL database named (mini_project)
+  * Run create table and insert queries as given in _./src/main/resources_ folder in _tables.txt_ and _queries.txt_ respectively.
+  * Set local psql database credentials in _config.properties_ file in _./src/main/resources_ folder.
+  * Set the current working directory as your project folder.
+  * You are set to run the project using below commands.
+  * Follow the instructions as printed on terminal after running the project for executing various functionalities implemented.
 
 
-Commands:
+* Commands: 
 
-`gradle build jacocotestreport`
-<br>
-`gradle run`
+  `gradle build jacocotestreport`
+
+  `gradle run`
 
 
-Requirements:
-* Java 17 (Oracle OpenJDK version 17.0.2)
-* PostgresSQL
+* Requirements:
+  * Java 17 (Oracle OpenJDK version 17.0.2)
+  * PostgresSQL
 
 <br>
 
